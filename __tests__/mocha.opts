@@ -1,0 +1,3 @@
+--require __tests__/helper.js
+--reporter spec
+--compilers js:babel-register

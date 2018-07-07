@@ -1,0 +1,25 @@
+{
+  "presets": [
+    "env",
+    "es2015",
+    "es2016",
+    "es2017"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "@party": "./src/services/party",
+          "$routes": "./src/routes",
+          "lib": "./lib",
+          "_middlewares": "./src/middlewares",
+          "_models": "./src/models"
+        }
+      }
+    ],
+    "transform-class-properties",
+    "transform-object-rest-spread"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "sh ./test.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://iamao@bitbucket.org/loolapalooza/backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/loolapalooza/backend#readme",
+  "dependencies": {
+    "body-checker": "^0.1.7",
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.1",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "gulp": "^3.9.1",
+    "helmet": "^3.12.1",
+    "knex": "^0.14.6",
+    "module-alias": "^2.1.0",
+    "morgan": "^1.9.0",
+    "pg": "^7.4.3",
+    "validator": "^10.4.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-module-resolver": "^3.1.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2016": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "faker": "^4.1.0",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.10",
+    "mocha": "^5.2.0",
+    "node-mocks-http": "^1.7.0",
+    "sinon": "^6.0.1",
+    "supertest": "^3.1.0"
+  },
+  "_moduleAliases": {
+    "@party": "./src/services/party",
+    "$routes": "./src/routes",
+    "lib": "./lib",
+    "_middlewares": "./src/middlewares"
+  }
+}

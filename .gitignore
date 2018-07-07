@@ -1,0 +1,6 @@
+node_modules/
+.env
+.aliases
+coverage/
+.nyc_output/
+seeds/*s/
