@@ -5,7 +5,8 @@ import allow from '_middlewares/allow'
 export const routes = composeAppRoute(
   [
     ['get', '/parties', allow('auth'), 'all'],
-    ['post', '/parties', allow('auth'), allow('admin'), 'create']
+    ['post', '/parties', allow('auth'), allow('admin'), 'create'],
+    ['delete', '/party/:party_id', allow('auth'), allow('admin'), 'remove']
   ],
   new Party()
 )

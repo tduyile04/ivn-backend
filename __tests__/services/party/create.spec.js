@@ -11,8 +11,7 @@
 
 describe('Party [POST] /parties', () => {
   beforeEach(done => {
-    setUp()
-      .then(() => done())
+    setUp().then(() => done())
   })
 
   it('should not allow non-admins to create parties', done => {

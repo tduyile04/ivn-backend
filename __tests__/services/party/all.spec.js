@@ -21,7 +21,7 @@ describe('Party [GET] /parties', () => {
       .expect(200)
       .end((err, res) => {
         expect(res.body.status.code).to.equal(200)
-        expect(res.body.data.parties.length).to.equal(0)
+        expect(res.body.data.parties.length).to.equal(2)
         done(err)
       })
   })
