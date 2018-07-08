@@ -34,6 +34,8 @@ global.superAuthorization = null
 global.politicianAuthorization = null
 global.candidateAuthorization = null
 
+global.party = null
+
 global.setUp = () => {
   return client.query('SELECT u.*, p.role_id, r.name as role_name FROM "user_role" p LEFT JOIN "user" u ON u.id = p.user_id LEFT JOIN "role" r ON r.id = p.role_id')
     .then(res => {
@@ -49,6 +51,11 @@ global.setUp = () => {
       global.regularAuthorization = jwt.sign({ data: { id: global.regular.id } }, process.env.TOKEN_SECRET)
       global.politicianAuthorization = jwt.sign({ data: { id: global.politician.id } }, process.env.TOKEN_SECRET)
       global.candidateAuthorization = jwt.sign({ data: { id: global.candidate.id } }, process.env.TOKEN_SECRET)
+
+      return client.query('SELECT * FROM party')
+        .then(res => {
+          global.party = res.rows[0]
+        })
     })
     .catch(error => console.error(error))
 }
