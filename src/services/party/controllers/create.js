@@ -1,6 +1,5 @@
 // eslint-disable: standard/no-callback-literal
 
-import validator from 'validator'
 import check from 'body-checker'
 import composeWaterfall from 'lib/compose/waterfall'
 import { errorHandler } from 'lib/error'
@@ -34,11 +33,11 @@ function checkBody (req, res, callback) {
 // Validate body
 function validateBody (data, res, callback) {
   if (typeof data.bio !== 'string') {
-    return callback({ message: 'invalid party avatar', code: 400 })
+    return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
   } else if (typeof data.avatar !== 'string') {
-    return callback({ message: 'invalid party avatar', code: 400 })
+    return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
   } else if (['png', 'jpeg', 'jpg'].indexOf(data.avatar.split('.').slice(-1)[0]) === -1) {
-    return callback({ message: 'invalid party avatar', code: 400 })
+    return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
   }
   return callback(null, data, res)
 }
@@ -48,7 +47,7 @@ function findParty (data, res, callback) {
     .query('SELECT id FROM party WHERE name=$1', [data.name])
     .then(res => res.rows.length === 0
       ? callback(null, data, res)
-      : callback(new Error('party already exists')))
+      : callback({ message: 'party already exists', code: 409 })) // eslint-disable-line
     .catch(error => errorHandler(error, res))
 }
 
