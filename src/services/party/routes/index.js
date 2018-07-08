@@ -6,8 +6,9 @@ export const routes = composeAppRoute(
   [
     ['get', '/parties', allow('auth'), 'all'],
     ['post', '/parties', allow('auth'), allow('admin'), 'create'],
-    ['delete', '/party/:party_id', allow('auth'), allow('admin'), 'remove'],
-    ['put', '/party/:party_id', allow('auth'), allow('admin'), 'update']
+    ['get', '/party/:party_id', allow('auth'), 'one'],
+    ['put', '/party/:party_id', allow('auth'), allow('admin'), 'update'],
+    ['delete', '/party/:party_id', allow('auth'), allow('admin'), 'remove']
   ],
   new Party()
 )
