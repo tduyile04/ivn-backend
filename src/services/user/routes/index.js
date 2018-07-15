@@ -4,7 +4,8 @@ import allow from '_middlewares/allow'
 
 export const routes = composeAppRoute(
   [
-    ['put', '/users/follow', allow('auth'), 'follow']
+    ['put', '/users/follow', allow('auth'), 'follow'],
+    ['delete', '/users/unfollow', allow('auth'), 'unfollow']
   ],
   new User()
 )
