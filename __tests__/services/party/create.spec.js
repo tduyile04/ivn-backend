@@ -7,11 +7,17 @@
   global request: true
   global beforeEach: true
   global regularAuthorization: true
+  global afterEach: true
+  global tearDown: true
 */
 
 describe('Party [POST] /parties', () => {
   beforeEach(done => {
     setUp().then(() => done())
+  })
+
+  afterEach(done => {
+    tearDown().then(() => done())
   })
 
   it('should not allow non-admins to create parties', done => {

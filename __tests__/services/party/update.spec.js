@@ -6,21 +6,39 @@
   global authorization: true
   global request: true
   global beforeEach: true
-  global party: true
   global regularAuthorization: true
+  global afterEach: true
+  global tearDown: true
 */
 
 describe('Party [PUT] /party/:id', () => {
+  let partyID = null
+  let partyName = null
   beforeEach(done => {
     setUp()
       .then(() => {
-        done()
+        request
+          .post('/api/v1/parties')
+          .set('Authorization', authorization)
+          .send({ name: 'WEE', avatar: 'WEE.jpeg', bio: 'xxxy' })
+          .expect(201)
+          .end((err, res) => {
+            if (err) console.log(err)
+            partyID = res.body.data.party.id
+            partyName = res.body.data.party.name
+            done()
+          })
       })
   })
+
+  afterEach(done => {
+    tearDown().then(() => done())
+  })
+
   it('should not allow non-admins to update parties', done => {
     let data = { name: 'QQW' }
     request
-      .put(`/api/v1/party/${party.id}`)
+      .put(`/api/v1/party/${partyID}`)
       .set('Authorization', regularAuthorization)
       .send(data)
       .expect(403)
@@ -34,7 +52,7 @@ describe('Party [PUT] /party/:id', () => {
   it('should allow admins to update party', done => {
     let data = { name: 'MatchboX Twenty' }
     request
-      .put(`/api/v1/party/${party.id}`)
+      .put(`/api/v1/party/${partyID}`)
       .set('Authorization', authorization)
       .send(data)
       .expect(200)
@@ -49,7 +67,7 @@ describe('Party [PUT] /party/:id', () => {
   it('should not allow empty name', done => {
     let party = { name: null }
     request
-      .put(`/api/v1/party/${party.id}`)
+      .put(`/api/v1/party/${partyID}`)
       .set('Authorization', authorization)
       .send(party)
       .expect(400)
@@ -63,7 +81,7 @@ describe('Party [PUT] /party/:id', () => {
   it('should not allow empty name', done => {
     let party = { name: '', avatar: 'qqw.jpeg', bio: 'xxxy' }
     request
-      .put(`/api/v1/party/${party.id}`)
+      .put(`/api/v1/party/${partyID}`)
       .set('Authorization', authorization)
       .send(party)
       .expect(400)
@@ -76,7 +94,7 @@ describe('Party [PUT] /party/:id', () => {
   it('should not allow non string avatar', done => {
     let party = { name: 'IOE', avatar: [['qqw.jpeg']], bio: 'xxxy' }
     request
-      .put(`/api/v1/party/${party.id}`)
+      .put(`/api/v1/party/${partyID}`)
       .set('Authorization', authorization)
       .send(party)
       .expect(400)
@@ -89,7 +107,7 @@ describe('Party [PUT] /party/:id', () => {
   it('should not allow non image type for avatar', done => {
     let party = { name: 'IOE', avatar: 'qqw.iup', bio: 'xxxy' }
     request
-      .put(`/api/v1/party/${party.id}`)
+      .put(`/api/v1/party/${partyID}`)
       .set('Authorization', authorization)
       .send(party)
       .expect(400)
@@ -102,7 +120,7 @@ describe('Party [PUT] /party/:id', () => {
   it('should not allow non string type for bio', done => {
     let party = { name: 'IOE', avatar: 'qqw.jpg', bio: [['cnkd', 'cmdlcd']] }
     request
-      .put(`/api/v1/party/${party.id}`)
+      .put(`/api/v1/party/${partyID}`)
       .set('Authorization', authorization)
       .send(party)
       .expect(400)
@@ -113,9 +131,9 @@ describe('Party [PUT] /party/:id', () => {
       })
   })
   it('should not update existing party name', done => {
-    let data = { name: 'MatchboX Twenty', avatar: '', bio: 'SOMETHING' }
+    let data = { name: partyName, avatar: '', bio: 'SOMETHING' }
     request
-      .put(`/api/v1/party/${party.id}`)
+      .put(`/api/v1/party/${partyID}`)
       .set('Authorization', authorization)
       .send(data)
       .expect(409)

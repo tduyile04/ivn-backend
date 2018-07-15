@@ -33,6 +33,7 @@ global.regularAuthorization = null
 global.superAuthorization = null
 global.politicianAuthorization = null
 global.candidateAuthorization = null
+global.cutOfftime = new Date()
 
 global.party = null
 
@@ -58,6 +59,17 @@ global.setUp = () => {
         })
     })
     .catch(error => console.error(error))
+}
+
+global.tearDown = () => {
+  console.log('tearing down')
+  return client
+    .query('DELETE FROM party WHERE created_At > $1', [global.cutOfftime])
+    .then(() =>
+      client
+        .query('DELETE FROM "user" WHERE created_At > $1', [global.cutOfftime])
+        .then(() => true))
+    .catch(e => { throw e })
 }
 
 function fmtUsers (rows) {
