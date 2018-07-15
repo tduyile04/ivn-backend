@@ -40,7 +40,7 @@ function findUser (data, res, callback) {
 function findFollowed (data, res, callback) {
   return knex('user_follow')
     .where({ follower_id: data.auth.id })
-    .select('following_id')
+    .select('*')
     .then(followings => {
       return followings.map(f => f.following_id).indexOf(data.user) === -1
         ? callback(null, data, res)

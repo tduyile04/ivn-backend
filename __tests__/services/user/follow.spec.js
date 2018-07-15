@@ -8,21 +8,37 @@
   global regularAuthorization: true
   global regular: true
   global admin: true
+  global afterEach: true
+  global tearDown: true
+  global candidate: true
 */
 
-describe('User [PUT] /user/:id/follow', () => {
+describe('User [PUT] /api/v1/users/follow', () => {
   beforeEach(done => {
     setUp()
       .then(() => {
-        done()
+        request
+          .put(`/api/v1/users/follow`)
+          .set('Authorization', regularAuthorization)
+          .send({ user: candidate.id })
+          .expect(200)
+          .end((err, res) => {
+            if (err) console.log(err)
+            expect(res.body.status.message).to.equal('success')
+            expect(res.body.status.code).to.equal(200)
+            done()
+          })
       })
+  })
+
+  afterEach(done => {
+    tearDown().then(() => done())
   })
 
   it('should only allow authenticated users follow other users', done => {
     let data = { user: regular.id }
     request
       .put(`/api/v1/users/follow`)
-      // .set('Authorization', regularAuthorization)
       .send(data)
       .expect(403)
       .end((err, res) => {
@@ -49,11 +65,10 @@ describe('User [PUT] /user/:id/follow', () => {
   })
 
   it('should not allow users follow already followed users', done => {
-    let data = { user: admin.id }
     request
       .put(`/api/v1/users/follow`)
       .set('Authorization', regularAuthorization)
-      .send(data)
+      .send({ user: candidate.id })
       .expect(409)
       .end((err, res) => {
         if (err) console.log(err)

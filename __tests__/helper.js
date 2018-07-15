@@ -64,11 +64,16 @@ global.setUp = () => {
 global.tearDown = () => {
   console.log('tearing down')
   return client
-    .query('DELETE FROM party WHERE created_At > $1', [global.cutOfftime])
+    .query('DELETE FROM party WHERE created_at > $1', [global.cutOfftime])
     .then(() =>
       client
-        .query('DELETE FROM "user" WHERE created_At > $1', [global.cutOfftime])
-        .then(() => true))
+        .query('DELETE FROM user_follow WHERE created_at > $1', [global.cutOfftime])
+        .then(() =>
+          client
+            .query('DELETE FROM "user" WHERE created_at > $1', [global.cutOfftime])
+            .then(() => true)
+            .catch(e => { throw e }))
+        .catch(e => { throw e }))
     .catch(e => { throw e })
 }
 

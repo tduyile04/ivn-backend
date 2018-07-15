@@ -11,18 +11,19 @@ exports.seed = function (knex, Promise) {
           return new Promise((resolve, reject) => {
             users.forEach((user, index) => {
               roles.forEach(role => {
-                return knex('user_role')
-                  .insert({
-                    user_id: user.id,
-                    role_id: role.id
-                  })
-                  .then(response => {
-                    if (index === users.length - 1) {
-                      return resolve(response)
-                    }
-                    return response
-                  })
-                  .catch(error => reject(error))
+                return ['candidate'].indexOf(role.name) === -1 &&
+                  knex('user_role')
+                    .insert({
+                      user_id: user.id,
+                      role_id: role.id
+                    })
+                    .then(response => {
+                      if (index === users.length - 1) {
+                        return resolve(response)
+                      }
+                      return response
+                    })
+                    .catch(error => reject(error))
               })
             })
           })
