@@ -10,8 +10,7 @@
 
 describe('Party [GET] /parties', () => {
   beforeEach(done => {
-    setUp()
-      .then(() => done())
+    setUp().then(() => done())
   })
 
   it('should return all parties', done => {

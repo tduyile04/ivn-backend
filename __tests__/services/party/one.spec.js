@@ -15,6 +15,10 @@ describe('Party [GET] /party/:id', () => {
       .then(() => done())
   })
 
+  afterEach(done => {
+    tearDown().then(() => done())
+  })
+
   it('should return one party', done => {
     request
       .get(`/api/v1/party/${party.id}`)
