@@ -14,6 +14,7 @@
           "@user": "./src/services/user",
           "@party": "./src/services/party",
           "$routes": "./src/routes",
+          "$util": "./src/util",
           "lib": "./lib",
           "_middlewares": "./src/middlewares",
           "_models": "./src/models"

@@ -1,5 +1,6 @@
 import supertest from 'supertest'
 import chai from 'chai'
+import faker from 'faker'
 import sinon from 'sinon'
 import jwt from 'jsonwebtoken'
 import { Client } from 'pg'
@@ -18,6 +19,7 @@ const client = new Client(Object.assign(
 client.connect()
 
 global.app = app
+global.faker = faker
 global.request = supertest(app)
 global.expect = chai.expect
 global.assert = chai.assert
@@ -63,16 +65,16 @@ global.setUp = () => {
 
 global.tearDown = () => {
   console.log('tearing down')
-  return client
-    .query('DELETE FROM party WHERE created_at > $1', [global.cutOfftime])
+  return Promise.all([
+    client.query('DELETE FROM party WHERE created_at > $1', [global.cutOfftime]),
+    client.query('DELETE FROM user_follow WHERE created_at > $1', [global.cutOfftime]),
+    client.query('DELETE FROM user_endorse WHERE created_at > $1', [global.cutOfftime]),
+    client.query('DELETE FROM user_role WHERE created_at > $1', [global.cutOfftime])
+  ])
     .then(() =>
       client
-        .query('DELETE FROM user_follow WHERE created_at > $1', [global.cutOfftime])
-        .then(() =>
-          client
-            .query('DELETE FROM "user" WHERE created_at > $1', [global.cutOfftime])
-            .then(() => true)
-            .catch(e => { throw e }))
+        .query('DELETE FROM "user" WHERE created_at > $1', [global.cutOfftime])
+        .then(() => true)
         .catch(e => { throw e }))
     .catch(e => { throw e })
 }

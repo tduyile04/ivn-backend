@@ -24,8 +24,8 @@ const decodeToken = (req, res, callback) => {
   const user = jwt.decode(
     req.headers.authorization,
     process.env.TOKEN_SECRET
-  ).data
-  return callback(null, req, res, user)
+  )
+  return callback(null, req, res, user.data)
 }
 
 const getUser = (req, res, user, callback) => {
