@@ -13,6 +13,9 @@
         "alias": {
           "@user": "./src/services/user",
           "@party": "./src/services/party",
+          "@question": "./src/services/question",
+          "@answer": "./src/services/answer",
+          "@comment": "./src/services/comment",
           "$routes": "./src/routes",
           "$util": "./src/util",
           "lib": "./lib",

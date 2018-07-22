@@ -6,7 +6,11 @@ import paginate from '../../../../lib/compose/paginate'
 // Check query object
 function checkQuery (req, res, callback) {
   const data = {}
-  const { limit = 10, page = 1 } = req.query
+  let { limit = 10, page = 1 } = req.query
+  if (isNaN(limit) || isNaN(page)) {
+    limit = 10
+    page = 1
+  }
   data.query = { limit: Number(limit), page: Number(page) }
   return callback(null, data, res)
 }
