@@ -2,13 +2,14 @@ const path = require('path')
 const { initFiles, generateUser } = require('./util')
 
 exports.seed = function (knex, Promise) {
+  if (process.env.NODE_ENV !== 'test') return null
   // Deletes ALL existing entries
   const filename = `${path.resolve(__dirname, './candidates')}/${new Date().toISOString().split('T')[0]}.${process.env.NODE_ENV}`
   initFiles(filename)
 
   const candidate = generateUser(filename)
   // Inserts seed entries
-  return process.env === 'test'
+  return process.env.NODE_ENV === 'test'
     ? knex('user')
       .insert(candidate)
       .then(() => {

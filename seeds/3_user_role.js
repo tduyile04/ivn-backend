@@ -1,7 +1,7 @@
 exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
 
-  return process.env === 'test'
+  return process.env.NODE_ENV === 'test'
     ? knex('user_role').del()
       .then(function () {
         return Promise.all([

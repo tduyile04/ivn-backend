@@ -1,7 +1,7 @@
 
 exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
-  return process.env === 'test'
+  return process.env.NODE_ENV === 'test'
     ? knex('party').del()
       .then(function () {
         // Inserts seed entries
