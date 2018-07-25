@@ -8,19 +8,21 @@ exports.seed = function (knex, Promise) {
 
   const candidate = generateUser(filename)
   // Inserts seed entries
-  return knex('user')
-    .insert(candidate)
-    .then(() => {
-      return Promise.all([
-        knex('user').where({ email: candidate.email }).select('id'),
-        knex('role').where({ name: 'candidate' }).select('id')
-      ])
-        .then(([user, role]) => {
-          return knex('user_role')
-            .insert({ role_id: role[0].id, user_id: user[0].id })
-            .then(res => res)
-            .catch(error => { throw error })
-        })
-        .catch(error => { throw error })
-    })
+  return process.env === 'test'
+    ? knex('user')
+      .insert(candidate)
+      .then(() => {
+        return Promise.all([
+          knex('user').where({ email: candidate.email }).select('id'),
+          knex('role').where({ name: 'candidate' }).select('id')
+        ])
+          .then(([user, role]) => {
+            return knex('user_role')
+              .insert({ role_id: role[0].id, user_id: user[0].id })
+              .then(res => res)
+              .catch(error => { throw error })
+          })
+          .catch(error => { throw error })
+      })
+    : null
 }

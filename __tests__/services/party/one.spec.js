@@ -7,6 +7,8 @@
   global regularAuthorization: true
   global setUp: true
   global party: true
+  global afterEach: true
+  global tearDown: true
 */
 
 describe('Party [GET] /party/:id', () => {
