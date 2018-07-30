@@ -13,6 +13,7 @@ export const routes = composeAppRoute(
     ['get', '/user/:user_id', allow('auth'), 'one'],
     ['put', '/user/:user_id', allow('auth'), 'update'],
     ['delete', '/user/:user_id', allow('auth'), 'deactivate'],
+    ['get', '/user/:user_id/timeline', allow('auth'), 'timeline'],
     ['put', '/user/:user_id/add_role', allow('auth'), allow('admin'), 'addRole'],
     ['put', '/user/:user_id/remove_role', allow('auth'), allow('admin'), 'removeRole']
   ],

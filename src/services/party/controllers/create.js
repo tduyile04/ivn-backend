@@ -3,7 +3,7 @@
 import check from 'body-checker'
 import composeWaterfall from 'lib/compose/waterfall'
 import { errorHandler } from 'lib/error'
-import { db } from '_models'
+import knex, { db } from '_models'
 
 // Check body object
 function checkBody (req, res, callback) {
@@ -20,6 +20,15 @@ function checkBody (req, res, callback) {
     bio: {
       type: 'string',
       default: ''
+    },
+    slogan: {
+      type: 'string'
+    },
+    about: {
+      type: 'string'
+    },
+    motto: {
+      type: 'string'
     }
   }, (err, body) => {
     if (err) {
@@ -56,21 +65,20 @@ function createParty (data, res, callback) {
     name: data.name,
     bio: data.bio,
     avatar: data.avatar,
-    created_by: data.admin.id
+    created_by: data.admin.id,
+    slogan: data.slogan,
+    motto: data.motto,
+    about: data.about
   }
   data.party = party
   return callback(null, data, res)
 }
 
 function saveParty (data, res, callback) {
-  return db
-    .query('INSERT INTO party(name, bio, avatar, created_by) VALUES($1, $2, $3, $4)', [
-      data.party.name,
-      data.party.bio,
-      data.party.avatar,
-      data.party.created_by
-    ])
+  return knex('party')
+    .insert(data.party)
     .then(() => callback(null, data, res))
+    .catch(error => errorHandler(error, res))
 }
 
 function fetchParty (data, res, callback) {

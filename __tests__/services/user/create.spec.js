@@ -208,23 +208,11 @@ describe('User [POST] /users', () => {
         done(err)
       })
   })
-  it.only('should signup a user', done => {
+  it('should signup a user', done => {
     const newUser = Object.assign({}, user)
-    console.log(newUser)
     request
       .post('/api/v1/users')
-      .send({
-        "firstName": "Tomi",
-        "lastName": "Duyile",
-        "email": "tomi@duyile.com",
-        "phoneNumber": "+234920284892",
-        "dateOfBirth": "2017-10-10T05:23:12.845Z",
-        "state": "Lagos",
-        "country": "Nigeria",
-        "localGovernment": "Mende",
-        "gender": "male",
-        "password": "password1"
-      })
+      .send(newUser)
       .expect(201)
       .end((err, res) => {
         expect(res.body.status.message).to.equal('success')

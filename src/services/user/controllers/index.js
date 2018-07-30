@@ -6,6 +6,7 @@ import follow from './follow'
 import update from './update'
 import endorse from './endorse'
 import addRole from './add.role'
+import timeline from './timeline'
 import unfollow from './unfollow'
 import deactivate from './deactivate'
 import removeRole from './remove.role'
@@ -20,6 +21,7 @@ class User {
   follow = follow
   endorse = endorse
   addRole = addRole
+  timeline = timeline
   unfollow = unfollow
   removeRole = removeRole
   deactivate = deactivate

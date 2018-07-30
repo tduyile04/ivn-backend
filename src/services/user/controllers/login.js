@@ -60,7 +60,7 @@ function validateHash (data, res, callback) {
 }
 
 function generateToken (data, res, callback) {
-  const token = jwt.sign({ data: data.user.id }, process.env.TOKEN_SECRET, { expiresIn: '23h' })
+  const token = jwt.sign({ data: { id: data.user.id } }, process.env.TOKEN_SECRET, { expiresIn: '23h' })
   data.user.token = token
   callback(null, data, res)
 }
