@@ -13,7 +13,7 @@ function checkBody (req, res, callback) {
   }, (err, body) => {
     if (err) return callback({ message: `Party ${err}`, code: 400 }) // eslint-disable-line
     data.auth = req.auth
-    data.body = body
+    data.body = { party: body.party }
     return callback(null, data, res)
   })
 }
