@@ -14,8 +14,8 @@ class Party {
   create = create(model)
   remove = remove(model)
   update = update(model)
-  follow = follow(model)
-  unfollow = unfollow(model)
+  // follow = follow(model)
+  // unfollow = unfollow(model)
 }
 
 export default Party
