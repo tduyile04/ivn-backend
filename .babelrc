@@ -16,6 +16,7 @@
           "@question": "./src/services/question",
           "@answer": "./src/services/answer",
           "@comment": "./src/services/comment",
+          "@upload": "./src/services/upload",
           "$routes": "./src/routes",
           "$util": "./src/util",
           "lib": "./lib",

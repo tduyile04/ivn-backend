@@ -9,7 +9,11 @@ function checkBody (req, res, callback) {
   return check(req.body, {
     name: { type: 'string' },
     avatar: { type: 'string' },
-    bio: { type: 'string' }
+    bio: { type: 'string' },
+    slogan: { type: 'string' },
+    about: { type: 'string' },
+    motto: { type: 'string' },
+    manifesto: { type: 'string' }
   }, (err, body) => {
     if (err) {
       return callback({ message: `party ${err}`, code: 400 }) // eslint-disable-line
@@ -89,17 +93,15 @@ function fmtResult (data, res, callback) {
   return callback(null, { party: data.party, statusCode: 200 })
 }
 
-export default function (model) {
-  return (...args) => {
-    return composeWaterfall(args, [
-      checkBody,
-      validateBody,
-      findParty,
-      updateParty,
-      partyNameExists,
-      saveParty,
-      fetchParty,
-      fmtResult
-    ])
-  }
+export default function (...args) {
+  return composeWaterfall(args, [
+    checkBody,
+    validateBody,
+    findParty,
+    updateParty,
+    partyNameExists,
+    saveParty,
+    fetchParty,
+    fmtResult
+  ])
 }

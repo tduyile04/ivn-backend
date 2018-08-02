@@ -39,8 +39,8 @@ var server = (0, _express2.default)();
 var router = _express2.default.Router();
 
 server.use((0, _helmet2.default)());
-server.use(_bodyParser2.default.json());
-server.use(_bodyParser2.default.urlencoded({ extended: false }));
+server.use(_bodyParser2.default.json({ limit: '10mb' }));
+server.use(_bodyParser2.default.urlencoded({ extended: false, limit: '10mb', parameterLimit: 1000000 }));
 // server.use(logger)
 
 routes.v1(server, router);

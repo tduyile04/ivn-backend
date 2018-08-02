@@ -49,8 +49,8 @@ describe('Party [PUT] /party/:id', () => {
         done(err)
       })
   })
-  it('should allow admins to update party', done => {
-    let data = { name: 'MatchboX Twenty' }
+  it.only('should allow admins to update party', done => {
+    let data = { name: 'MatchboX Twenty', slogan: 'By Order of the Peaky Blinders' }
     request
       .put(`/api/v1/party/${partyID}`)
       .set('Authorization', authorization)
@@ -58,6 +58,7 @@ describe('Party [PUT] /party/:id', () => {
       .expect(200)
       .end((err, res) => {
         if (err) console.log(err)
+        console.log(JSON.stringify(res.body, null, 2))
         expect(res.body.status.message).to.equal('success')
         expect(typeof res.body.data.party.id).to.equal('string')
         expect(res.body.data.party.name).to.equal(data.name)

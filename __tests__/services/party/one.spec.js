@@ -6,15 +6,37 @@
   global beforeEach: true
   global regularAuthorization: true
   global setUp: true
-  global party: true
   global afterEach: true
   global tearDown: true
+  global authorization: true
+  global candidate: true
 */
 
 describe('Party [GET] /party/:id', () => {
+  let partyID = null
   beforeEach(done => {
-    setUp()
-      .then(() => done())
+    setUp().then(() => {
+      let party = { name: 'WEE', avatar: 'WEE.jpeg', bio: 'xxxy' }
+      request
+        .post('/api/v1/parties')
+        .set('Authorization', authorization)
+        .send(party)
+        .expect(201)
+        .end((err, res) => {
+          if (err) console.log(err)
+          partyID = res.body.data.party.id
+          request
+            .post(`/api/v1/party/${partyID}/members`)
+            .set('Authorization', authorization)
+            .send({ user: candidate.id })
+            .expect(201)
+            .end((err, res) => {
+              if (err) console.log(err)
+              expect(res.body.status.message).to.equal('success')
+              done(err)
+            })
+        })
+    })
   })
 
   afterEach(done => {
@@ -23,12 +45,13 @@ describe('Party [GET] /party/:id', () => {
 
   it('should return one party', done => {
     request
-      .get(`/api/v1/party/${party.id}`)
+      .get(`/api/v1/party/${partyID}`)
       .set('Authorization', regularAuthorization)
       .expect(200)
       .end((err, res) => {
         expect(res.body.status.code).to.equal(200)
-        expect(res.body.data.party.id).to.equal(party.id)
+        console.log(JSON.stringify(res.body, null, 2))
+        expect(res.body.data.party.id).to.equal(partyID)
         done(err)
       })
   })

@@ -29,6 +29,9 @@ function checkBody (req, res, callback) {
     },
     motto: {
       type: 'string'
+    },
+    manifesto: {
+      type: 'string'
     }
   }, (err, body) => {
     if (err) {
@@ -44,8 +47,6 @@ function validateBody (data, res, callback) {
   if (typeof data.bio !== 'string') {
     return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
   } else if (typeof data.avatar !== 'string') {
-    return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
-  } else if (['png', 'jpeg', 'jpg'].indexOf(data.avatar.split('.').slice(-1)[0]) === -1) {
     return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
   }
   return callback(null, data, res)
@@ -97,16 +98,14 @@ function fmtResult (data, res, callback) {
   return callback(null, { party, statusCode: 201 }, null)
 }
 
-export default function (model) {
-  return (...args) => {
-    return composeWaterfall(args, [
-      checkBody,
-      validateBody,
-      findParty,
-      createParty,
-      saveParty,
-      fetchParty,
-      fmtResult
-    ])
-  }
+export default function (...args) {
+  return composeWaterfall(args, [
+    checkBody,
+    validateBody,
+    findParty,
+    createParty,
+    saveParty,
+    fetchParty,
+    fmtResult
+  ])
 }

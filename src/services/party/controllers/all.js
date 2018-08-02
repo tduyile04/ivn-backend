@@ -1,6 +1,7 @@
 import composeWaterfall from 'lib/compose/waterfall'
 import { errorHandler } from 'lib/error'
-import { db } from '_models'
+import knex from '_models'
+import { formatParties } from './util'
 
 // Check query object
 function checkQuery (req, res, callback) {
@@ -9,10 +10,12 @@ function checkQuery (req, res, callback) {
 
 function fetchParties (data, res, callback) {
   // TODO: ADD only admin action
-  return db
-    .query('SELECT id, name, created_at, updated_at FROM party')
+  return knex('party')
+    .leftJoin('party_follow', 'party_follow.party_id', 'party.id')
+    .leftJoin('party_member', 'party_member.party_id', 'party.id')
+    .select(['party.*', 'party_follow.id as follower', 'party_member.id as member'])
     .then(res => {
-      data.parties = res.rows
+      data.parties = formatParties(res)
       return callback(null, data, res)
     })
     .catch(error => errorHandler(error, res))
@@ -23,12 +26,10 @@ function fmtResult (data, res, callback) {
   return callback(null, { parties })
 }
 
-export default function (model) {
-  return (...args) => {
-    return composeWaterfall(args, [
-      checkQuery,
-      fetchParties,
-      fmtResult
-    ])
-  }
+export default function (...args) {
+  return composeWaterfall(args, [
+    checkQuery,
+    fetchParties,
+    fmtResult
+  ])
 }

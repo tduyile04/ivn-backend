@@ -206,6 +206,7 @@ function addRole(data, res, callback) {
 }
 
 function generateToken(data, res, callback) {
+  console.log(data.user);
   var token = _jsonwebtoken2.default.sign({ data: { id: data.user.id } }, process.env.TOKEN_SECRET, { expiresIn: '23h' });
   data.user.token = token;
   callback(null, data, res);

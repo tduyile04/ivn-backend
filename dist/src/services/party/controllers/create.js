@@ -4,14 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = function (model) {
-  return function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+exports.default = function () {
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
 
-    return (0, _waterfall2.default)(args, [checkBody, validateBody, findParty, createParty, saveParty, fetchParty, fmtResult]);
-  };
+  return (0, _waterfall2.default)(args, [checkBody, validateBody, findParty, createParty, saveParty, fetchParty, fmtResult]);
 };
 
 var _bodyChecker = require('body-checker');
@@ -55,6 +53,9 @@ function checkBody(req, res, callback) {
       type: 'string'
     },
     motto: {
+      type: 'string'
+    },
+    manifesto: {
       type: 'string'
     }
   }, function (err, body) {

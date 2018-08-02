@@ -24,6 +24,10 @@ var _answer = require('./answer');
 
 var _answer2 = _interopRequireDefault(_answer);
 
+var _upload = require('./upload');
+
+var _upload2 = _interopRequireDefault(_upload);
+
 var _comment = require('./comment');
 
 var _comment2 = _interopRequireDefault(_comment);
@@ -36,6 +40,7 @@ exports.default = function (app, router) {
   (0, _user2.default)(router);
   (0, _party2.default)(router);
   (0, _answer2.default)(router);
+  (0, _upload2.default)(router);
   (0, _comment2.default)(router);
   (0, _question2.default)(router);
   app.use(BASE, router);
