@@ -8,7 +8,7 @@
   global setUp: true
 */
 
-describe('User [GET] /users', () => {
+describe('User [GET] /user/:user_id', () => {
   beforeEach(done => {
     setUp().then(() => done())
   })

@@ -35,7 +35,6 @@ const getUser = (req, res, user, callback) => {
     .select(['user.*', 'role.name as role_name', 'role.id as role_id'])
     .where({ 'user.id': user.id })
     .then(result => {
-      console.log(result)
       req.auth = Object.values(result.reduce((acc, u) => {
         if (acc[u.id]) {
           u.role_id && acc[u.id].roles.push({ name: u.role_name, id: u.role_id })

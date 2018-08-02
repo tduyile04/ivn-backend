@@ -7,11 +7,38 @@
   global regularAuthorization: true
   global setUp: true
   global admin: true
+  global candidate: true
+  global afterEach: true
+  global tearDown: true
 */
 
-describe('User [GET] /users', () => {
+describe('User [GET] /user/:user_id', () => {
   beforeEach(done => {
-    setUp().then(() => done())
+    setUp().then(() => {
+      request
+        .put(`/api/v1/users/follow`)
+        .set('Authorization', regularAuthorization)
+        .send({ user: candidate.id })
+        .expect(200)
+        .end((err, res) => {
+          if (err) console.log(err)
+          request
+            .put(`/api/v1/users/endorse`)
+            .set('Authorization', regularAuthorization)
+            .send({ user: candidate.id })
+            .expect(200)
+            .end((err, res) => {
+              if (err) console.log(err)
+              expect(res.body.status.message).to.equal('success')
+              expect(res.body.status.code).to.equal(200)
+              done()
+            })
+        })
+    })
+  })
+
+  afterEach(done => {
+    tearDown().then(() => done())
   })
 
   it('should not allow unauthenticated users through', done => {
@@ -26,14 +53,14 @@ describe('User [GET] /users', () => {
 
   it('should return user information', done => {
     request
-      .get(`/api/v1/user/${admin.id}`)
+      .get(`/api/v1/user/${candidate.id}`)
       .set('Authorization', regularAuthorization)
       .expect(200)
       .end((err, res) => {
         expect(res.body.status.code).to.equal(200)
-        expect(res.body.data.user.firstName).to.equal(admin.firstName)
-        expect(res.body.data.user.lastName).to.equal(admin.lastName)
-        expect(res.body.data.user.email).to.equal(admin.email)
+        expect(res.body.data.user.firstName).to.equal(candidate.firstName)
+        expect(res.body.data.user.lastName).to.equal(candidate.lastName)
+        expect(res.body.data.user.email).to.equal(candidate.email)
         done(err)
       })
   })
