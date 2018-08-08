@@ -47,9 +47,9 @@ function checkBody (req, res, callback) {
 // Validate body
 function validateBody (data, res, callback) {
   console.log(data)
-  if (typeof data.bio !== 'string') {
-    return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
-  }
+  // if (typeof data.bio !== 'string') {
+  //   return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
+  // }
   return callback(null, data, res)
 }
 
