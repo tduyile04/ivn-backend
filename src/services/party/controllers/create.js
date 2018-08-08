@@ -66,7 +66,7 @@ function createParty (data, res, callback) {
     name: data.name,
     bio: data.bio,
     avatar: data.avatar,
-    created_by: data.admin.id,
+    // created_by: data.admin.id,
     slogan: data.slogan,
     motto: data.motto,
     about: data.about
