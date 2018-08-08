@@ -15,7 +15,7 @@ csv()
         console.log('Success')
         console.log(response)
       }).catch(error => {
-        console.log('Failed', error)
+        console.log('Failed', error.response.data)
       })
     })
   })
