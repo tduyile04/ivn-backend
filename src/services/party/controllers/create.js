@@ -32,6 +32,9 @@ function checkBody (req, res, callback) {
     },
     manifesto: {
       type: 'string'
+    },
+    abbr: {
+      type: 'string'
     }
   }, (err, body) => {
     if (err) {
@@ -69,7 +72,8 @@ function createParty (data, res, callback) {
     // created_by: data.admin.id,
     slogan: data.slogan,
     motto: data.motto,
-    about: data.about
+    about: data.about,
+    abbr: data.abbr
   }
   data.party = party
   return callback(null, data, res)
