@@ -22,6 +22,8 @@ var _models2 = _interopRequireDefault(_models);
 
 var _error = require('../../../../lib/error');
 
+var _util = require('../../notification/controllers/util');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function checkBody(req, res, callback) {
@@ -30,6 +32,9 @@ function checkBody(req, res, callback) {
   data.question = { id: req.params.question_id };
   return callback(null, data, res);
 }
+
+// Notifications
+
 
 function findQuestion(data, res, callback) {
   return (0, _models2.default)('question').where({ id: data.question.id }).select('*').then(function (result) {
@@ -75,5 +80,12 @@ function saveAnswer(data, res, callback) {
 }
 
 function fmtResult(data, res, callback) {
+  var notification = {
+    note: data.auth.firstName + ' ' + data.auth.lastName + ' just liked your question',
+    context: 'question_like',
+    sender_id: data.auth.id,
+    owner_id: data.question.candidate_id
+  };
+  (0, _util.createNotifications)(notification);
   return callback(null, { statusCode: data.liked ? 204 : 201, question: data.question });
 }

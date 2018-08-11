@@ -17,6 +17,8 @@
           "@answer": "./src/services/answer",
           "@comment": "./src/services/comment",
           "@upload": "./src/services/upload",
+          "@post": "./src/services/post",
+          "@notification": "./src/services/notification",
           "$routes": "./src/routes",
           "$util": "./src/util",
           "lib": "./lib",

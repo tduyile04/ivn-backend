@@ -2,6 +2,9 @@ import composeWaterfall from 'lib/compose/waterfall'
 import knex from '_models'
 import { errorHandler } from 'lib/error'
 
+// Notifications
+import { createNotifications } from '@notification/controllers/util'
+
 function checkBody (req, res, callback) {
   const data = {}
   data.auth = req.auth
@@ -58,6 +61,13 @@ function saveAnswer (data, res, callback) {
 }
 
 function fmtResult (data, res, callback) {
+  const notification = {
+    note: `${data.auth.firstName} ${data.auth.lastName} just liked your question`,
+    context: 'question_like',
+    sender_id: data.auth.id,
+    owner_id: data.question.candidate_id
+  }
+  createNotifications(notification)
   return callback(null, { statusCode: data.liked ? 204 : 201, question: data.question })
 }
 

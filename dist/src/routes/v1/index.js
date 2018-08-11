@@ -32,12 +32,17 @@ var _comment = require('./comment');
 
 var _comment2 = _interopRequireDefault(_comment);
 
+var _post = require('./post');
+
+var _post2 = _interopRequireDefault(_post);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BASE = '/api/v1';
 
 exports.default = function (app, router) {
   (0, _user2.default)(router);
+  (0, _post2.default)(router);
   (0, _party2.default)(router);
   (0, _answer2.default)(router);
   (0, _upload2.default)(router);

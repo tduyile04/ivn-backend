@@ -26,6 +26,8 @@ var _models2 = _interopRequireDefault(_models);
 
 var _error = require('../../../../lib/error');
 
+var _util = require('../../notification/controllers/util');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function checkBody(req, res, callback) {
@@ -40,6 +42,9 @@ function checkBody(req, res, callback) {
     return callback(null, body, res);
   });
 }
+
+// Notifications
+
 
 function validateBody(data, res, callback) {
   if (data.user === data.auth.id) {
@@ -87,5 +92,12 @@ function saveRelationship(data, res, callback) {
 }
 
 function fmtResult(data, res, callback) {
+  var notification = {
+    note: data.auth.firstName + ' ' + data.auth.lastName + ' just followed you',
+    context: 'user_follow',
+    sender_id: data.auth.id,
+    owner_id: data.fields.following_id
+  };
+  (0, _util.createNotifications)(notification);
   return callback(null, { statusCode: 200, message: 'followed user' });
 }

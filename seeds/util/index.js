@@ -10,8 +10,8 @@ function generateUser (filename) {
     phoneNumber: faker.phone.phoneNumber(),
     dateOfBirth: faker.date.past(),
     isRegistered: true,
-    state: faker.address.state(),
-    country: 'nigeria',
+    state: 'Lagos',
+    country: 'Nigeria',
     localGovernment: 'Maryland'
   }
   let text = '\n\nUser Info\n----------\n'

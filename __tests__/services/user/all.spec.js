@@ -30,7 +30,7 @@ describe('User [GET] /user/:user_id', () => {
       .expect(200)
       .end((err, res) => {
         expect(res.body.status.code).to.equal(200)
-        expect(res.body.data.users.length).to.equal(6)
+        expect(res.body.data.users.length).to.equal(5)
         done(err)
       })
   })
@@ -42,10 +42,25 @@ describe('User [GET] /user/:user_id', () => {
       .end((err, res) => {
         expect(res.body.status.code).to.equal(200)
         expect(res.body.data.users.length).to.equal(2)
-        expect(res.body.metadata.total).to.equal(6)
+        expect(res.body.metadata.total).to.equal(5)
         expect(res.body.metadata.page).to.equal(1)
         expect(res.body.metadata.totalPage).to.equal(3)
         expect(res.body.metadata.perPage).to.equal(2)
+        done(err)
+      })
+  })
+  it('should return a list of paginated users', done => {
+    request
+      .get('/api/v1/users/?limit=10&page=1&roles=candidate,politician&state=lagos&country=nigeria')
+      .set('Authorization', regularAuthorization)
+      .expect(200)
+      .end((err, res) => {
+        expect(res.body.status.code).to.equal(200)
+        expect(res.body.data.users.length).to.equal(4)
+        expect(res.body.metadata.total).to.equal(4)
+        expect(res.body.metadata.page).to.equal(1)
+        expect(res.body.metadata.totalPage).to.equal(1)
+        expect(res.body.metadata.perPage).to.equal(10)
         done(err)
       })
   })

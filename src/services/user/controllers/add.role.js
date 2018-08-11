@@ -3,6 +3,9 @@ import composeWaterfall from 'lib/compose/waterfall'
 import knex from '_models'
 import { errorHandler } from 'lib/error'
 
+// Notifications
+import { createNotifications } from '@notification/controllers/util'
+
 function checkBody (req, res, callback) {
   let data = {}
   return check(
@@ -59,7 +62,7 @@ function isAdmin (data, res, callback) {
 function findRole (data, res, callback) {
   return knex('role')
     .where({ name: data.fields.role })
-    .select(['id'])
+    .select(['id', 'name'])
     .then(roles => {
       return roles.length > 0
         ? callback(null, Object.assign({}, data, { role: roles[0] }), res)
@@ -97,6 +100,13 @@ function saveRole (data, res, callback) {
 }
 
 function fmtResult (data, res, callback) {
+  const notification = {
+    note: `You now have ${data.role.name} access`,
+    context: 'role_upgrade',
+    sender_id: data.auth.id,
+    owner_id: data.userRole.user_id
+  }
+  createNotifications(notification)
   return callback(null, { statusCode: 200, message: 'Role added to user' })
 }
 

@@ -3,6 +3,9 @@ import composeWaterfall from 'lib/compose/waterfall'
 import knex, { db } from '_models'
 import { errorHandler } from 'lib/error'
 
+// Notifications
+import { createNotifications } from '@notification/controllers/util'
+
 function checkBody (req, res, callback) {
   return check(req.body, {
     user: {
@@ -67,6 +70,13 @@ function saveRelationship (data, res, callback) {
 }
 
 function fmtResult (data, res, callback) {
+  const notification = {
+    note: `${data.auth.firstName} ${data.auth.lastName} just followed you`,
+    context: 'user_follow',
+    sender_id: data.auth.id,
+    owner_id: data.fields.following_id
+  }
+  createNotifications(notification)
   return callback(null, { statusCode: 200, message: 'followed user' })
 }
 

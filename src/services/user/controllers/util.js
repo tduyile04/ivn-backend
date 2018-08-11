@@ -19,6 +19,7 @@ export function formatUser (data) {
       acc[row.id].followers = row.follower_id ? [mapUser(row, fields, 'follower')] : []
       acc[row.id].endorsements = row.endorsement_id ? [mapUser(row, fields, 'endorsement')] : []
       acc[row.id].roles = row.role_id ? [{ id: row.role_id, name: row.role_name }] : []
+
       fields.forEach(field => {
         delete acc[row.id][`user_${field}`]
         delete acc[row.id][`follower_${field}`]

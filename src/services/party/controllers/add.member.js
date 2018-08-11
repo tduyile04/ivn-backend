@@ -3,6 +3,9 @@ import composeWaterfall from 'lib/compose/waterfall'
 import knex from '_models'
 import { errorHandler } from 'lib/error'
 
+// Notifications
+import { createNotifications } from '@notification/controllers/util'
+
 function checkBody (req, res, callback) {
   const data = {}
   return check(req.body, {
@@ -20,11 +23,11 @@ function checkBody (req, res, callback) {
 
 function findParty (data, res, callback) {
   return knex('party')
-    .select('id')
+    .select('*')
     .where({ id: data.body.party })
     .then(result => {
       return result.length > 0
-        ? callback(null, data, res)
+        ? callback(null, Object.assign({}, data, { party: result[0] }), res)
         : callback({ message: 'Party not found', code: 404 }) // eslint-disable-line
     }).catch((e) => { console.log(e); callback({ message: 'Party not found', code: 404 }) }) // eslint-disable-line
 }
@@ -69,6 +72,13 @@ function saveMember (data, res, callback) {
     .catch(e => errorHandler(e, res))
 }
 function fmtResult (data, res, callback) {
+  const notification = {
+    note: `You have been added to the party ${data.party.name}`,
+    context: 'party_member_add',
+    sender_id: data.auth.id,
+    owner_id: data.partyMember.user_id
+  }
+  createNotifications(notification)
   return callback(null, { member: data.partyMember, statusCode: 201 })
 }
 
