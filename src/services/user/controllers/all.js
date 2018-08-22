@@ -61,7 +61,6 @@ function createRoleFilterQuery (data, res, callback) {
 }
 
 function fetchUsers (data, res, callback) {
-  console.log(data.filterQuery, data.filterRoleQuery)
   return knex('user as u')
     .leftJoin('user_role as ur', 'u.id', 'ur.user_id')
     .leftJoin('role as r', 'ur.role_id', 'r.id')

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "sh ./test.sh",
     "postinstall": "gulp build-src && gulp build-lib && gulp build-knex",
-    "start": "node dist/src/server.js"
+    "start": "node dist/src/server.js",
+    "kompode": "node ./kompode/index.js"
   },
   "repository": {
     "type": "git",
