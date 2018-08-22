@@ -6,6 +6,7 @@
   global setUp: true
   global authorization: true
   global admin: true
+  global candidateAuthorization: true
 */
 
 import httpMocks from 'node-mocks-http'
@@ -93,12 +94,12 @@ describe('Allow middleware', () => {
       expect(response.error.message).to.equal('Unauthorized! You cannot access this resource')
       done()
     })
-    it('should allow an admin user through the endpoint', done => {
+    it('should allow a candidate user through the endpoint', done => {
       req = httpMocks.createRequest({
         method: 'GET',
         url: '/api/v1/path',
         headers: {
-          authorization
+          authorization: candidateAuthorization
         }
       })
       allow('auth')(req, res, () => {

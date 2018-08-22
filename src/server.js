@@ -19,7 +19,7 @@ server.use(bodyParser.urlencoded({ extended: false }))
 
 routes.v1(server, router)
 
-if (NODE_ENV === 'development') {
+if (NODE_ENV !== 'test') {
   server.listen(PORT, () => logger.log(`server started on PORT:${PORT} 🚀\n----------------------------------------------`))
 }
 
