@@ -37,33 +37,33 @@ describe('User [PUT] /api/v1/users/follow', () => {
               .expect(201)
               .end((err, res) => {
                 if (err) console.log(err)
+                let post = { content: 'The divine comedy by Dante Alighieri' }
+
                 request
-                  .post('/api/v1/questions')
+                  .post('/api/v1/posts')
                   .set('Authorization', regularAuthorization)
-                  .send(Object.assign({}, question, { question: 'Where were you?' }))
+                  .send(post)
                   .expect(201)
                   .end((err, res) => {
                     if (err) console.log(err)
-                    q = res.body.data.question
-                    let answer = { answer: 'Yes', question: q.id }
                     request
-                      .post('/api/v1/answers')
-                      .set('Authorization', candidateAuthorization)
-                      .send(answer)
+                      .post('/api/v1/questions')
+                      .set('Authorization', regularAuthorization)
+                      .send(Object.assign({}, question, { question: 'Where were you?' }))
                       .expect(201)
                       .end((err, res) => {
                         if (err) console.log(err)
-                        comments = []
-                        let comment = { comment: 'Really??', question: q.id }
+                        q = res.body.data.question
+                        let answer = { answer: 'Yes', question: q.id }
                         request
-                          .post('/api/v1/comments')
-                          .set('Authorization', regularAuthorization)
-                          .send(comment)
+                          .post('/api/v1/answers')
+                          .set('Authorization', candidateAuthorization)
+                          .send(answer)
                           .expect(201)
                           .end((err, res) => {
                             if (err) console.log(err)
-                            comments.push(comment)
-                            comment = { comment: 'My daddy was a baseman', question: q.id }
+                            comments = []
+                            let comment = { comment: 'Really??', question: q.id }
                             request
                               .post('/api/v1/comments')
                               .set('Authorization', regularAuthorization)
@@ -72,14 +72,24 @@ describe('User [PUT] /api/v1/users/follow', () => {
                               .end((err, res) => {
                                 if (err) console.log(err)
                                 comments.push(comment)
+                                comment = { comment: 'My daddy was a baseman', question: q.id }
                                 request
-                                  .post('/api/v1/questions')
+                                  .post('/api/v1/comments')
                                   .set('Authorization', regularAuthorization)
-                                  .send(Object.assign({}, question, { question: 'You are the one I need?' }))
+                                  .send(comment)
                                   .expect(201)
                                   .end((err, res) => {
                                     if (err) console.log(err)
-                                    done(err)
+                                    comments.push(comment)
+                                    request
+                                      .post('/api/v1/questions')
+                                      .set('Authorization', regularAuthorization)
+                                      .send(Object.assign({}, question, { question: 'You are the one I need?' }))
+                                      .expect(201)
+                                      .end((err, res) => {
+                                        if (err) console.log(err)
+                                        done(err)
+                                      })
                                   })
                               })
                           })
@@ -101,9 +111,8 @@ describe('User [PUT] /api/v1/users/follow', () => {
       .expect(200)
       .end((err, res) => {
         if (err) console.log(err)
-        console.log(res.body)
         expect(res.body.status.message).to.equal('success')
-        expect(res.body.data.timeline.length).to.equal(3)
+        expect(res.body.data.timeline.length).to.equal(4)
         done(err)
       })
   })

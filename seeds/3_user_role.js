@@ -12,7 +12,7 @@ exports.seed = function (knex, Promise) {
             return new Promise((resolve, reject) => {
               users.forEach((user, index) => {
                 roles.forEach(role => {
-                  return ['candidate'].indexOf(role.name) === -1 &&
+                  return ['candidate', 'politician'].indexOf(role.name) === -1 &&
                       knex('user_role')
                         .insert({
                           user_id: user.id,

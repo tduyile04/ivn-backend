@@ -13,4 +13,13 @@ Object.defineProperty(exports, 'countries', {
   }
 });
 
+var _states = require('./states');
+
+Object.defineProperty(exports, 'states', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_states).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

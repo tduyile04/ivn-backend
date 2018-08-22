@@ -1,0 +1,83 @@
+import composeWaterfall from 'lib/compose/waterfall'
+import knex from '_models'
+import { errorHandler } from 'lib/error'
+
+// Notifications
+import { createNotifications } from '@notification/controllers/util'
+
+function checkBody (req, res, callback) {
+  const data = {}
+  data.auth = req.auth
+  data.post = { id: req.params.post_id }
+  return callback(null, data, res)
+}
+
+function findPost (data, res, callback) {
+  return knex('post')
+    .where({ id: data.post.id })
+    .select('*')
+    .then(result => {
+      if (result.length === 1) {
+        data.post = result[0]
+        return callback(null, data, res)
+      }
+      return callback({ message: 'Post not found', code: 404 }) // eslint-disable-line
+    })
+    .catch(() => callback({ message: 'Post not found', code: 404 })) // eslint-disable-line
+}
+
+function findLiked (data, res, callback) {
+  return knex('post_like')
+    .where({ user_id: data.auth.id, post_id: data.post.id })
+    .then(result => {
+      if (result.length === 1) {
+        data.liked = true
+        data.like = result[0]
+      }
+      return callback(null, data, res)
+    })
+    .catch(e => errorHandler(e, res))
+}
+
+function createLike (data, res, callback) {
+  if (!data.liked) {
+    data.like = {
+      user_id: data.auth.id,
+      post_id: data.post.id
+    }
+  }
+  return callback(null, data, res)
+}
+
+function saveLike (data, res, callback) {
+  return (data.liked
+    ? knex('post_like').where({ id: data.like.id }).del()
+    : knex('post_like').returning('*').insert(data.like))
+    .then(response => {
+      data.like = response[0]
+      return callback(null, data, res)
+    })
+    .catch(e => errorHandler(e, res))
+}
+
+function fmtResult (data, res, callback) {
+  const notification = {
+    note: `${data.auth.firstName} ${data.auth.lastName} just liked on your post`,
+    context: 'post_like',
+    sender_id: data.auth.id,
+    owner_id: data.post.author_id
+  }
+  createNotifications(notification)
+  return callback(null, { statusCode: data.liked ? 204 : 201, post: data.post })
+}
+
+export default function (...args) {
+  return composeWaterfall(args, [
+    checkBody,
+    findPost,
+    findLiked,
+    createLike,
+    saveLike,
+    fmtResult
+  ])
+}

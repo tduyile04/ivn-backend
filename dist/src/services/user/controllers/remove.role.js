@@ -26,6 +26,8 @@ var _models2 = _interopRequireDefault(_models);
 
 var _error = require('../../../../lib/error');
 
+var _util = require('../../notification/controllers/util');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function checkBody(req, res, callback) {
@@ -43,6 +45,9 @@ function checkBody(req, res, callback) {
     return callback(null, data, res);
   });
 }
+
+// Notifications
+
 
 function validate(data, res, callback) {
   if (data.auth.id === data.user.id) {
@@ -72,7 +77,7 @@ function isAdmin(data, res, callback) {
 }
 
 function findRole(data, res, callback) {
-  return (0, _models2.default)('role').where({ name: data.fields.role }).select(['id']).then(function (roles) {
+  return (0, _models2.default)('role').where({ name: data.fields.role }).select(['id', 'name']).then(function (roles) {
     return roles.length > 0 ? callback(null, Object.assign({}, data, { role: roles[0] }), res) : callback({ message: 'Role "' + data.fields.role + '" not found', code: 404 }); // eslint-disable-line
   }).catch(function () {
     return callback({ message: 'Role "' + data.fields.role + '" not found', code: 404 });
@@ -96,5 +101,12 @@ function removeRole(data, res, callback) {
 }
 
 function fmtResult(data, res, callback) {
+  var notification = {
+    note: 'You no longer have ' + data.role.name + ' access',
+    context: 'role_downgrade',
+    sender_id: data.auth.id,
+    owner_id: data.userRole.user_id
+  };
+  (0, _util.createNotifications)(notification);
   return callback(null, { statusCode: 200, message: 'Role added to user' });
 }

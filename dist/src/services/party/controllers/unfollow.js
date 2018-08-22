@@ -12,10 +12,6 @@ exports.default = function () {
   return (0, _waterfall2.default)(args, [checkBody, findParty, findFollowed, removeRelationship, fmtResult]);
 };
 
-var _bodyChecker = require('body-checker');
-
-var _bodyChecker2 = _interopRequireDefault(_bodyChecker);
-
 var _waterfall = require('../../../../lib/compose/waterfall');
 
 var _waterfall2 = _interopRequireDefault(_waterfall);
@@ -30,17 +26,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function checkBody(req, res, callback) {
   var data = {};
-  return (0, _bodyChecker2.default)(req.body, {
-    party: {
-      type: 'string',
-      required: true
-    }
-  }, function (err, body) {
-    if (err) return callback({ message: 'Party ' + err, code: 400 }); // eslint-disable-line
-    data.auth = req.auth;
-    data.body = body;
-    return callback(null, data, res);
-  });
+  data.auth = req.auth;
+  data.body = { party: req.params.party_id };
+  return callback(null, data, res);
 }
 
 function findParty(data, res, callback) {

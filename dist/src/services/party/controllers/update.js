@@ -4,14 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = function (model) {
-  return function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+exports.default = function () {
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
 
-    return (0, _waterfall2.default)(args, [checkBody, validateBody, findParty, updateParty, partyNameExists, saveParty, fetchParty, fmtResult]);
-  };
+  return (0, _waterfall2.default)(args, [checkBody, validateBody, findParty, updateParty, partyNameExists, saveParty, fetchParty, fmtResult]);
 };
 
 var _bodyChecker = require('body-checker');
@@ -34,7 +32,11 @@ function checkBody(req, res, callback) {
   return (0, _bodyChecker2.default)(req.body, {
     name: { type: 'string' },
     avatar: { type: 'string' },
-    bio: { type: 'string' }
+    bio: { type: 'string' },
+    slogan: { type: 'string' },
+    about: { type: 'string' },
+    motto: { type: 'string' },
+    manifesto: { type: 'string' }
   }, function (err, body) {
     if (err) {
       return callback({ message: 'party ' + err, code: 400 }); // eslint-disable-line

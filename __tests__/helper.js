@@ -66,7 +66,10 @@ global.tearDown = () => {
   console.log('tearing down')
   return Promise.all([
     client.query('DELETE FROM party WHERE created_at > $1', [global.cutOfftime]),
+    client.query('DELETE FROM post WHERE created_at > $1', [global.cutOfftime]),
     client.query('DELETE FROM answer WHERE created_at > $1', [global.cutOfftime]),
+    client.query('DELETE FROM notification WHERE created_at > $1', [global.cutOfftime]),
+    client.query('DELETE FROM poll WHERE created_at > $1', [global.cutOfftime]),
     client.query('DELETE FROM question WHERE created_at > $1', [global.cutOfftime]),
     client.query('DELETE FROM user_follow WHERE created_at > $1', [global.cutOfftime]),
     client.query('DELETE FROM user_endorse WHERE created_at > $1', [global.cutOfftime]),

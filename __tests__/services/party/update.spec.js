@@ -50,7 +50,7 @@ describe('Party [PUT] /party/:id', () => {
       })
   })
   it('should allow admins to update party', done => {
-    let data = { name: 'MatchboX Twenty' }
+    let data = { name: 'MatchboX Twenty', slogan: 'By Order of the Peaky Blinders' }
     request
       .put(`/api/v1/party/${partyID}`)
       .set('Authorization', authorization)

@@ -14,8 +14,7 @@ function checkBody (req, res, callback) {
       required: true
     },
     avatar: {
-      type: 'string',
-      default: 'default.jpeg'
+      type: 'string'
     },
     bio: {
       type: 'string',
@@ -29,6 +28,12 @@ function checkBody (req, res, callback) {
     },
     motto: {
       type: 'string'
+    },
+    manifesto: {
+      type: 'string'
+    },
+    abbr: {
+      type: 'string'
     }
   }, (err, body) => {
     if (err) {
@@ -41,13 +46,10 @@ function checkBody (req, res, callback) {
 
 // Validate body
 function validateBody (data, res, callback) {
-  if (typeof data.bio !== 'string') {
-    return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
-  } else if (typeof data.avatar !== 'string') {
-    return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
-  } else if (['png', 'jpeg', 'jpg'].indexOf(data.avatar.split('.').slice(-1)[0]) === -1) {
-    return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
-  }
+  console.log(data)
+  // if (typeof data.bio !== 'string') {
+  //   return callback({ message: 'invalid party avatar', code: 400 }) // eslint-disable-line
+  // }
   return callback(null, data, res)
 }
 
@@ -65,10 +67,11 @@ function createParty (data, res, callback) {
     name: data.name,
     bio: data.bio,
     avatar: data.avatar,
-    created_by: data.admin.id,
+    // created_by: data.admin.id,
     slogan: data.slogan,
     motto: data.motto,
-    about: data.about
+    about: data.about,
+    abbr: data.abbr
   }
   data.party = party
   return callback(null, data, res)
@@ -97,16 +100,14 @@ function fmtResult (data, res, callback) {
   return callback(null, { party, statusCode: 201 }, null)
 }
 
-export default function (model) {
-  return (...args) => {
-    return composeWaterfall(args, [
-      checkBody,
-      validateBody,
-      findParty,
-      createParty,
-      saveParty,
-      fetchParty,
-      fmtResult
-    ])
-  }
+export default function (...args) {
+  return composeWaterfall(args, [
+    checkBody,
+    validateBody,
+    findParty,
+    createParty,
+    saveParty,
+    fetchParty,
+    fmtResult
+  ])
 }

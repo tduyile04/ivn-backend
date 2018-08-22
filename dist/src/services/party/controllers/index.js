@@ -32,6 +32,14 @@ var _unfollow = require('./unfollow');
 
 var _unfollow2 = _interopRequireDefault(_unfollow);
 
+var _add = require('./add.member');
+
+var _add2 = _interopRequireDefault(_add);
+
+var _remove3 = require('./remove.member');
+
+var _remove4 = _interopRequireDefault(_remove3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41,13 +49,15 @@ var model = 'something';
 var Party = function Party() {
   _classCallCheck(this, Party);
 
-  this.all = (0, _all2.default)(model);
-  this.one = (0, _one2.default)(model);
-  this.create = (0, _create2.default)(model);
-  this.remove = (0, _remove2.default)(model);
-  this.update = (0, _update2.default)(model);
-  this.follow = (0, _follow2.default)(model);
-  this.unfollow = (0, _unfollow2.default)(model);
+  this.all = _all2.default;
+  this.one = _one2.default;
+  this.create = _create2.default;
+  this.remove = _remove2.default;
+  this.update = _update2.default;
+  this.follow = _follow2.default;
+  this.unfollow = _unfollow2.default;
+  this.addMember = _add2.default;
+  this.removeMember = _remove4.default;
 };
 
 exports.default = Party;

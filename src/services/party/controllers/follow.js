@@ -1,21 +1,12 @@
-import check from 'body-checker'
 import composeWaterfall from 'lib/compose/waterfall'
 import knex, { db } from '_models'
 import { errorHandler } from 'lib/error'
 
 function checkBody (req, res, callback) {
   const data = {}
-  return check(req.body, {
-    party: {
-      type: 'string',
-      required: true
-    }
-  }, (err, body) => {
-    if (err) return callback({ message: `Party ${err}`, code: 400 }) // eslint-disable-line
-    data.auth = req.auth
-    data.body = body
-    return callback(null, data, res)
-  })
+  data.auth = req.auth
+  data.body = { party: req.params.party_id }
+  return callback(null, data, res)
 }
 
 function findParty (data, res, callback) {

@@ -51,6 +51,9 @@ function checkBody (req, res, callback) {
       bio: {
         type: 'string'
       },
+      avatar: {
+        type: 'string'
+      },
       localGovernment: {
         type: 'string'
       }

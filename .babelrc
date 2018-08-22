@@ -9,18 +9,24 @@
     [
       "module-resolver",
       {
-        "root": ["./"],
+        "root": [
+          "./"
+        ],
         "alias": {
           "@user": "./src/services/user",
           "@party": "./src/services/party",
           "@question": "./src/services/question",
           "@answer": "./src/services/answer",
           "@comment": "./src/services/comment",
+          "@upload": "./src/services/upload",
+          "@post": "./src/services/post",
+          "@notification": "./src/services/notification",
           "$routes": "./src/routes",
           "$util": "./src/util",
           "lib": "./lib",
           "_middlewares": "./src/middlewares",
-          "_models": "./src/models"
+          "_models": "./src/models",
+          "@poll": "./src/services/poll"
         }
       }
     ],

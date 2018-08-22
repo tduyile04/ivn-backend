@@ -1,6 +1,6 @@
 import composeWaterfall from 'lib/compose/waterfall'
 import knex from '_models'
-
+import { formatUser } from './util'
 // Check query object
 function checkQuery (req, res, callback) {
   const data = { query: req.query, user: { id: req.params.user_id } }
@@ -8,26 +8,36 @@ function checkQuery (req, res, callback) {
 }
 
 function fetchUser (data, res, callback) {
-  return knex('user as u')
-    .leftJoin('user_role as ur', 'u.id', 'ur.user_id')
-    .leftJoin('role as r', 'ur.role_id', 'r.id')
-    .select(['u.id', 'u.email', 'u.firstName', 'u.lastName', 'r.name as roleName'])
-    .where(knex.raw('u.id = ?', [data.user.id]))
+  const fields = ['id', 'email', 'avatar', 'firstName', 'lastName'].reduce((acc, field) => {
+    acc.push(
+      `user.${field} as ${field}`,
+      `follower.${field} as follower_${field}`,
+      `following.${field} as following_${field}`,
+      `endorsement.${field} as endorsement_${field}`
+    )
+    return acc
+  }, [])
+  return knex('user')
+    .leftJoin('user_role', 'user_role.user_id', 'user.id')
+    .leftJoin('role', 'role.id', 'user_role.role_id')
+    .leftJoin('user_follow as following_user', 'following_user.follower_id', 'user.id')
+    .leftJoin('user_follow as follower_user', 'follower_user.following_id', 'user.id')
+    .leftJoin('user_endorse', 'user_endorse.candidate_id', 'user.id')
+    .leftJoin('user as following', 'following.id', 'following_user.following_id')
+    .leftJoin('user as follower', 'follower.id', 'follower_user.follower_id')
+    .leftJoin('user as endorsement', 'endorsement.id', 'user_endorse.endorser_id')
+    .select([
+      'role.id as role_id',
+      'role.name as role_name',
+      'follower.id as follower_id'
+    ].concat(fields))
+    .where({ 'user.id': data.user.id })
     .options({ nestTables: true })
     .then(rows => {
       if (rows.length === 0) {
         return callback({ message: 'User not found', code: 404 }) // eslint-disable-line
       }
-      data.user = Object.values(rows.reduce((acc, user) => {
-        if (acc[user.id]) {
-          acc[user.id].roles.push(user.roleName)
-        } else {
-          acc[user.id] = user
-          acc[user.id].roles = [user.roleName]
-          delete acc[user.id].roleName
-        }
-        return acc
-      }, {}))[0]
+      data.user = formatUser(rows)
       return callback(null, data, res)
     })
     .catch(() => callback({ message: 'User not found', code: 404 })) // eslint-disable-line

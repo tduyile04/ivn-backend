@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _fourOhFour = require('../../../lib/error/fourOhFour');
+var _poll = require('./poll');
 
-var _fourOhFour2 = _interopRequireDefault(_fourOhFour);
+var _poll2 = _interopRequireDefault(_poll);
 
 var _party = require('./party');
 
@@ -24,18 +24,33 @@ var _answer = require('./answer');
 
 var _answer2 = _interopRequireDefault(_answer);
 
+var _upload = require('./upload');
+
+var _upload2 = _interopRequireDefault(_upload);
+
 var _comment = require('./comment');
 
 var _comment2 = _interopRequireDefault(_comment);
+
+var _post = require('./post');
+
+var _post2 = _interopRequireDefault(_post);
+
+var _fourOhFour = require('../../../lib/error/fourOhFour');
+
+var _fourOhFour2 = _interopRequireDefault(_fourOhFour);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BASE = '/api/v1';
 
 exports.default = function (app, router) {
+  (0, _poll2.default)(router);
   (0, _user2.default)(router);
+  (0, _post2.default)(router);
   (0, _party2.default)(router);
   (0, _answer2.default)(router);
+  (0, _upload2.default)(router);
   (0, _comment2.default)(router);
   (0, _question2.default)(router);
   app.use(BASE, router);

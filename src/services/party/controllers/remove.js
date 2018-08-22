@@ -24,12 +24,10 @@ function fmtResult (data, res, callback) {
   return callback(null, { statusCode: 200 })
 }
 
-export default function (model) {
-  return (...args) => {
-    return composeWaterfall(args, [
-      findParty,
-      deleteParty,
-      fmtResult
-    ])
-  }
+export default function (...args) {
+  return composeWaterfall(args, [
+    findParty,
+    deleteParty,
+    fmtResult
+  ])
 }

@@ -26,6 +26,8 @@ var _models2 = _interopRequireDefault(_models);
 
 var _error = require('../../../../lib/error');
 
+var _util = require('../../notification/controllers/util');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function checkBody(req, res, callback) {
@@ -48,6 +50,9 @@ function checkBody(req, res, callback) {
     return callback(null, data, res);
   });
 }
+
+// Notifications
+
 
 function validateComment(data, res, callback) {
   if (data.fields.comment.length > 255) {
@@ -87,5 +92,12 @@ function saveComment(data, res, callback) {
 }
 
 function fmtResult(data, res, callback) {
+  var notification = {
+    note: data.auth.firstName + ' ' + data.auth.lastName + ' just commented on your question',
+    context: 'question_comment',
+    sender_id: data.auth.id,
+    owner_id: data.question.asker_id
+  };
+  (0, _util.createNotifications)(notification);
   return callback(null, { statusCode: 201, comment: data.comment });
 }
